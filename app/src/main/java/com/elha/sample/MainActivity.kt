@@ -29,10 +29,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun openBottomModule(list: List<BottomModule>){
         elhaBottomSheet {
-            showFullScreen = true
+            showFullScreen(true)
             itemList = list
             onItemsSelected = {
                 // handle item selection
+            }
+            onBack {
+                // handle back button click
             }
         }?.show(supportFragmentManager, ElhaBottomSheetDialog::class.java.canonicalName)
     }

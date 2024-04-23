@@ -14,24 +14,22 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 /**
  * Created by elnurh on 4/23/2024 with builder pattern.
  */
-class ElhaBottomSheetDialog: BaseBottomSheetDialog() {
+class ElhaBottomSheetDialog : BaseBottomSheetDialog() {
 
-
-    private var backButton = false
     private lateinit var itemList: List<BottomModule>
     private var onItemsSelected: ((BottomModule) -> Unit)? = null
     private var onDismiss: (() -> Unit)? = null
     private var onBack: (() -> Unit)? = null
+    private var isFullscreen: Boolean = false
 
-    override var showFullscreen: Boolean
-        get() = false
-        set(value) {}
 
     lateinit var bottomAdapter: BottomAdapter
 
     private lateinit var binding: BottomsheetMainBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         binding = BottomsheetMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -39,9 +37,15 @@ class ElhaBottomSheetDialog: BaseBottomSheetDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        this.showFullscreen = isFullscreen
+
         (dialog as? BottomSheetDialog)?.behavior?.apply {
-            state = BottomSheetBehavior.STATE_EXPANDED
+            if (isFullscreen)
+                state = BottomSheetBehavior.STATE_EXPANDED
+            else
+                state = BottomSheetBehavior.STATE_HALF_EXPANDED
         }
+
         initView()
     }
 
@@ -51,15 +55,14 @@ class ElhaBottomSheetDialog: BaseBottomSheetDialog() {
             recyclerViewList.layoutManager = LinearLayoutManager(context)
             recyclerViewList.setHasFixedSize(true)
 
-            bottomAdapter = BottomAdapter(
-                BottomAdapter.BottomItemClick {
-                    onItemsSelected?.invoke(it)
-                    this@ElhaBottomSheetDialog.dismiss()
-                })
+            bottomAdapter = BottomAdapter(BottomAdapter.BottomItemClick {
+                onItemsSelected?.invoke(it)
+                this@ElhaBottomSheetDialog.dismiss()
+            })
             recyclerViewList.adapter = bottomAdapter
             bottomAdapter.submitList(itemList)
             binding.backButton.setOnClickListener {
-                onDismiss?.invoke()
+                onBack?.invoke()
             }
 
         }
@@ -72,14 +75,14 @@ class ElhaBottomSheetDialog: BaseBottomSheetDialog() {
 
 
     class Builder {
-        var showFullScreen = false
+        var isFullscreen: Boolean = false
         var itemList: List<BottomModule>? = null
         var onItemsSelected: ((BottomModule) -> Unit)? = null
         var onDismiss: (() -> Unit)? = null
         var onBack: (() -> Unit)? = null
 
-        fun showFullScreen() {
-            this.showFullScreen = showFullScreen
+        fun showFullScreen(show: Boolean) {
+            this.isFullscreen = show
         }
 
         fun itemList(itemList: () -> List<BottomModule>) {
@@ -93,14 +96,15 @@ class ElhaBottomSheetDialog: BaseBottomSheetDialog() {
         fun onDismiss(onDismiss: () -> Unit) {
             this.onDismiss = onDismiss
         }
-        fun onBack(onDismiss: () -> Unit) {
+
+        fun onBack(onBack: () -> Unit) {
             this.onBack = onBack
         }
 
         fun build(): ElhaBottomSheetDialog? {
             val bottomSheet = ElhaBottomSheetDialog()
-            bottomSheet.showFullscreen = showFullScreen
-            bottomSheet.itemList = itemList?:return null
+            bottomSheet.isFullscreen = isFullscreen
+            bottomSheet.itemList = itemList ?: return null
             bottomSheet.onItemsSelected = onItemsSelected
             bottomSheet.onDismiss = onDismiss
             bottomSheet.onBack = onBack
@@ -110,5 +114,6 @@ class ElhaBottomSheetDialog: BaseBottomSheetDialog() {
 
 
 }
+
 fun elhaBottomSheet(lambda: ElhaBottomSheetDialog.Builder.() -> Unit) =
     ElhaBottomSheetDialog.Builder().apply(lambda).build()

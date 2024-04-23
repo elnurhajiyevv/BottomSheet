@@ -1,7 +1,9 @@
 package com.elha.bottommodule
 
 import android.app.Dialog
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +43,9 @@ abstract class BaseBottomSheetDialog() : BottomSheetDialogFragment() {
                 if (showFullscreen) {
                     setupFullHeight(parentView)
                     behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+                } else {
+                    setupHalfHeight(parentView)
+                    behaviour.state = BottomSheetBehavior.STATE_HALF_EXPANDED
                 }
                 behaviour.isDraggable = isDraggable
 
@@ -51,6 +56,7 @@ abstract class BaseBottomSheetDialog() : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val behavior = BottomSheetBehavior.from(view.parent as View)
         behavior.skipCollapsed = true
         if (!showFullscreen) {
@@ -66,6 +72,12 @@ abstract class BaseBottomSheetDialog() : BottomSheetDialogFragment() {
     private fun setupFullHeight(bottomSheet: View) {
         val layoutParams = bottomSheet.layoutParams
         layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+        bottomSheet.layoutParams = layoutParams
+    }
+
+    private fun setupHalfHeight(bottomSheet: View) {
+        val layoutParams = bottomSheet.layoutParams
+        layoutParams.height = Resources.getSystem().displayMetrics.heightPixels/2
         bottomSheet.layoutParams = layoutParams
     }
 
