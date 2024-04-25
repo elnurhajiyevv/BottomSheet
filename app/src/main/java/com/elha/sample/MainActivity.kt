@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun openBottomModule(list: List<BottomModule>){
         elhaBottomSheet {
-            showFullScreen(true)
+            showFullScreen(false)
             itemList = list
             onItemsSelected = {
                 // handle item selection
