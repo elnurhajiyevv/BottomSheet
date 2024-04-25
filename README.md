@@ -9,6 +9,7 @@
 ![Screenshot2](images/screenshot2.png)
 ![Screenshot1](images/screenshot1.png)
 ![Screenshot3](images/screenshot3.png)
+![Screenshot4](images/screenshot4.png)
 
 
 ## Setup
@@ -34,12 +35,12 @@ dependencies {
 ```
 
 
-* How to use?:
+* How to use:
 
 ```kotlin
 elhaBottomSheet {
             // set true for fullscreen or false half screen
-            showFullScreen(false)
+            showFullScreen(true)
             // submit list for adapter
             itemList = list
             onItemsSelected = {
@@ -48,6 +49,7 @@ elhaBottomSheet {
             onBack {
                 // handle back button click
             }
+            setTopMarginView(70)
         }?.show(supportFragmentManager, ElhaBottomSheetDialog::class.java.canonicalName)
 ```
 
