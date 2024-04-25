@@ -6,7 +6,8 @@
 
 ## BottomSheet
 
-![Screenshots](images/screenshots.png)
+![Screenshot1](images/screenshot1.png)
+![Screenshot2](images/screenshot2.png)
 
 ## Setup
 
