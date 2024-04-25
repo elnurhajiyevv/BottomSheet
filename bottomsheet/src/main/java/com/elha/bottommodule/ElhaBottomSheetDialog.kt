@@ -6,10 +6,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.marginTop
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.elha.bottommodule.databinding.BottomsheetMainBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+
 
 /**
  * Created by elnurh on 4/23/2024 with builder pattern.
@@ -21,6 +26,7 @@ class ElhaBottomSheetDialog : BaseBottomSheetDialog() {
     private var onDismiss: (() -> Unit)? = null
     private var onBack: (() -> Unit)? = null
     private var isFullscreen: Boolean = false
+    private var topMargin: Int = 0
 
 
     lateinit var bottomAdapter: BottomAdapter
@@ -66,6 +72,13 @@ class ElhaBottomSheetDialog : BaseBottomSheetDialog() {
             }
 
         }
+        setViewMargin(topMargin)
+    }
+
+    fun setViewMargin(top: Int){
+        val newLayoutParams = binding.mainLayout.layoutParams as FrameLayout.LayoutParams
+        newLayoutParams.topMargin = top
+        binding.mainLayout.layoutParams = newLayoutParams
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -80,9 +93,14 @@ class ElhaBottomSheetDialog : BaseBottomSheetDialog() {
         var onItemsSelected: ((BottomModule) -> Unit)? = null
         var onDismiss: (() -> Unit)? = null
         var onBack: (() -> Unit)? = null
+        var topMargin: Int = 0
 
         fun showFullScreen(show: Boolean) {
             this.isFullscreen = show
+        }
+
+        fun setTopMarginView(topMargin: Int) {
+            this.topMargin = topMargin
         }
 
         fun itemList(itemList: () -> List<BottomModule>) {
@@ -108,6 +126,7 @@ class ElhaBottomSheetDialog : BaseBottomSheetDialog() {
             bottomSheet.onItemsSelected = onItemsSelected
             bottomSheet.onDismiss = onDismiss
             bottomSheet.onBack = onBack
+            bottomSheet.topMargin = topMargin
             return bottomSheet
         }
     }

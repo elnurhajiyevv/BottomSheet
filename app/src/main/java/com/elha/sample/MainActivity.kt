@@ -29,7 +29,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun openBottomModule(list: List<BottomModule>){
         elhaBottomSheet {
-            showFullScreen(false)
+            // set true for fullscreen or false half screen
+            showFullScreen(true)
+            // submit list for adapter
             itemList = list
             onItemsSelected = {
                 // handle item selection
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
             onBack {
                 // handle back button click
             }
+            setTopMarginView(70)
         }?.show(supportFragmentManager, ElhaBottomSheetDialog::class.java.canonicalName)
     }
 }
