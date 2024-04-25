@@ -33,6 +33,24 @@ dependencies {
 	}
 ```
 
+
+* How to use?:
+
+```kotlin
+elhaBottomSheet {
+            // set true for fullscreen or false half screen
+            showFullScreen(false)
+            // submit list for adapter
+            itemList = list
+            onItemsSelected = {
+                // handle item selection
+            }
+            onBack {
+                // handle back button click
+            }
+        }?.show(supportFragmentManager, ElhaBottomSheetDialog::class.java.canonicalName)
+```
+
 MIT License
 
 Copyright (c) 2024 Elnur Hajiyev
