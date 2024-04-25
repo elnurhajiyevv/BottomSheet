@@ -12,6 +12,10 @@
 ![Screenshot4](images/screenshot4.png)
 
 
+## About
+***This bottomsheet extends BottomSheetDialogFragment class and it is a responsive bottomsheet Android library which is hosted on ***Jitpack***. This library allows easily create bottom view concept.*** 
+
+
 ## Setup
 
 #### 1. Add the gradle dependency
